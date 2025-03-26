@@ -36,7 +36,7 @@ export default function CreateUsernameModal() {
     }
 
     try {
-      const { success, message } = await updateUsername(username);
+      const { success, message } = await updateUsername(username.trim());
 
       showToast({
         message: message,
