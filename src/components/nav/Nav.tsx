@@ -71,7 +71,7 @@ export default function NavBar() {
 
           <ul
             data-open={openNav}
-            className="shadow-story-card fixed bottom-0 left-0 z-100 flex h-full w-[200px] -translate-x-full flex-col gap-10 rounded-tr-2xl rounded-br-2xl bg-white px-5 py-10 data-[open=true]:translate-x-0 sm:static sm:h-fit sm:w-fit sm:!translate-x-0 sm:flex-row sm:items-center sm:gap-[30px] sm:bg-transparent sm:p-0 sm:shadow-none"
+            className="shadow-story-card fixed data-[open=true]:dark:bg-black/70  bottom-0 left-0 z-100 flex h-full w-[200px] -translate-x-full flex-col gap-10 rounded-tr-2xl rounded-br-2xl bg-white px-5 py-10 data-[open=true]:translate-x-0 sm:static sm:h-fit sm:w-fit sm:!translate-x-0 sm:flex-row sm:items-center sm:gap-[30px] sm:bg-transparent sm:p-0 sm:shadow-none"
           >
             <li
               onClick={handleNavExpansion}
