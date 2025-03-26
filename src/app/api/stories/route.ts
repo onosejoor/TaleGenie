@@ -1,6 +1,4 @@
-import User from "@/lib/models/user.model";
-import Story from "@/lib/models/story.model";
-
+import { Story } from "@/lib/models/index";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -11,7 +9,6 @@ export async function GET(req: NextRequest) {
       page: string;
       limit: string;
       keyword: string;
-      
     };
 
     const nextPage = parseInt(page) || 1;
