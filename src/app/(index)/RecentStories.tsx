@@ -155,12 +155,12 @@ const StoryCard = ({
       </div>
       <div className="flex items-center justify-between">
         <Link href={`/${username}`} className="hover:underline">
-          <b className="text-primary font-bold capitalize dark:text-white">
+          <b className="text-primary font-bold capitalize text-xs dark:text-white">
             By {name}
           </b>
         </Link>
 
-        <time className="text-secondary font-bold">
+        <time className="text-secondary font-bold text-xs">
           {dayjs(createdAt).format("DD MMM, YYYY")}
         </time>
       </div>

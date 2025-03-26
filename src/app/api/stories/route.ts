@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
       page: string;
       limit: string;
       keyword: string;
+      
     };
 
     const nextPage = parseInt(page) || 1;
