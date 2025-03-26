@@ -2,7 +2,7 @@ import { google } from "@ai-sdk/google";
 import { streamObject } from "ai";
 import { storySchema } from "./schema";
 
-export const maxDuration = 5000;
+export const maxDuration = 60;
 
 export async function POST(req: Request) {
   const formData = (await req.json()) as {
