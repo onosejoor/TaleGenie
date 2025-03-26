@@ -30,7 +30,7 @@ export default function CreateUsernameModal() {
         message: "Invalid Username",
         variants: "error",
       });
-      setLoading(true);
+      setLoading(false);
 
       return;
     }

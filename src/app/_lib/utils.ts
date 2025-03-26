@@ -28,6 +28,7 @@ export const isActiveClassName = (isActive: boolean) =>
     : "text-secondary/70  border-transparent before:w-0 font-semibold";
 
 export function validateUsername(username: string) {
+  const trimer = username.trim()
   const regex = /^(?![_-])(?!.*[_-]{2})[a-zA-Z0-9_-]{3,16}(?<![_-])$/;
-  return regex.test(username);
+  return regex.test(trimer);
 }
