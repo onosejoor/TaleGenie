@@ -1,5 +1,6 @@
 "use server";
 
+import User from "../models/user.model";
 import Story from "../models/story.model";
 import { verifySession } from "./dal";
 

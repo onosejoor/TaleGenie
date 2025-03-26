@@ -1,5 +1,5 @@
-import Story from "@/lib/models/story.model";
 import User from "@/lib/models/user.model";
+import Story from "@/lib/models/story.model";
 
 import { NextRequest, NextResponse } from "next/server";
 
