@@ -25,7 +25,9 @@ export default function CreateUsernameModal() {
     e.preventDefault();
     setLoading(true);
 
-    if (!validateUsername(username)) {
+    const trimedUsername = username.trim()
+
+    if (!validateUsername(trimedUsername)) {
       showToast({
         message: "Invalid Username",
         variants: "error",
@@ -36,7 +38,7 @@ export default function CreateUsernameModal() {
     }
 
     try {
-      const { success, message } = await updateUsername(username.trim());
+      const { success, message } = await updateUsername(trimedUsername);
 
       showToast({
         message: message,
@@ -45,7 +47,7 @@ export default function CreateUsernameModal() {
 
       if (success) {
         await mutate("/api/user/me");
-        router.push(`/${username}`);
+        router.push(`/${trimedUsername}`);
         setLoading(false);
       }
     } catch (error) {
