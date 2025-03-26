@@ -1,6 +1,6 @@
 "use server";
 
-import User from "../models/user.model";
+import { User } from "../models/index";
 import { verifySession } from "./dal";
 import { createSession } from "./jwt";
 import uploadImage from "./uploadImage";

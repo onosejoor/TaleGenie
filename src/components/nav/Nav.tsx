@@ -49,7 +49,7 @@ export default function NavBar() {
       )}
       <nav
         suppressHydrationWarning
-        className="flex items-center talegenie-container justify-between border-b border-[#D3D3D3]/50 px-10 py-[11px] lg:px-20"
+        className="talegenie-container flex items-center justify-between border-b border-[#D3D3D3]/50 px-10 py-[11px] lg:px-20"
       >
         <Link href={"/"} className="shrink-0">
           <Img
@@ -71,7 +71,7 @@ export default function NavBar() {
 
           <ul
             data-open={openNav}
-            className="shadow-story-card fixed data-[open=true]:dark:bg-black/70  bottom-0 left-0 z-100 flex h-full w-[200px] -translate-x-full flex-col gap-10 rounded-tr-2xl rounded-br-2xl bg-white px-5 py-10 data-[open=true]:translate-x-0 sm:static sm:h-fit sm:w-fit sm:!translate-x-0 sm:flex-row sm:items-center sm:gap-[30px] sm:bg-transparent sm:p-0 sm:shadow-none"
+            className="shadow-story-card fixed bottom-0 left-0 z-100 flex h-full w-[200px] -translate-x-full flex-col gap-10 rounded-tr-2xl rounded-br-2xl bg-white px-5 py-10 data-[open=true]:translate-x-0 sm:static sm:h-fit sm:w-fit sm:!translate-x-0 sm:flex-row sm:items-center sm:gap-[30px] sm:bg-transparent sm:p-0 sm:shadow-none data-[open=true]:dark:bg-black/70"
           >
             <li
               onClick={handleNavExpansion}
@@ -86,6 +86,7 @@ export default function NavBar() {
               const className = isActiveClassName(isActive);
               return (
                 <li
+                  onClick={handleNavExpansion}
                   key={index}
                   className={`${className} hover:before:bg-secondary relative h-fit text-lg capitalize before:absolute before:-bottom-4 before:left-0 before:block before:h-[2px] before:rounded-full before:transition-all hover:before:w-full sm:h-full sm:before:-bottom-[25px]`}
                 >

@@ -1,7 +1,7 @@
 "use server";
 
-import OTP from "../models/otp.model";
-import User from "../models/user.model";
+import { OTP } from "../models/index";
+import { User } from "../models/index";
 import { generate } from "otp-generator";
 import { createTransport } from "nodemailer";
 

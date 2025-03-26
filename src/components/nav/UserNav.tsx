@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { usePathname } from "next/navigation";
 import Spinner from "../loaders/Spinner";
 import { isActiveClassName } from "@/app/_lib/utils";
+import { signOut } from "@/lib/actions/signout";
 
 type Props = {
   openDropDown: boolean;
@@ -42,6 +43,11 @@ export default function UserNavComp({
   ];
 
   const handleDropDown = () => setOpenDropDown(!openDropDown);
+
+  async function handleSignOut() {
+    await signOut();
+    handleNavExpansion();
+  }
 
   if (error) {
     if (error.status === 401) {
@@ -123,7 +129,10 @@ export default function UserNavComp({
               })}
             </ul>
             <div className="py-2">
-              <button className="dark:hover:bg-secondary/10 block w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray-100">
+              <button
+                onClick={handleSignOut}
+                className="dark:hover:bg-secondary/10 block w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray-100"
+              >
                 Sign out
               </button>
             </div>

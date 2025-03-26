@@ -3,7 +3,7 @@
 import { verifySession } from "@/lib/actions/dal";
 import { createSession } from "@/lib/actions/jwt";
 
-import User from "@/lib/models/user.model";
+import { User } from "../models/index";
 
 /**
  * @param username the username to add to the user DB

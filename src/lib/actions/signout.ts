@@ -1,9 +1,16 @@
-'use server'
+"use server";
 
-import { cookies } from "next/headers"
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 export async function signOut() {
-const cookie = await cookies()
+  try {
+    const cookie = await cookies();
 
-await cookie.delete("ta")
+    cookie.delete("talegenie_session");
+
+    redirect("/signin");
+  } catch (error) {
+    console.log(error);
+  }
 }
