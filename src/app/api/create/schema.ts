@@ -6,7 +6,7 @@ export const storySchema = z
     genres: z
       .array(z.string())
       .describe(
-        "the genres of the story. generate one based on the story if it's not provided in the propmt must not be above 2 genres, the genres must be [Comedy, Documentary, Horror, Sci Fi, Real Life, Erotica]",
+        "the genres of the story. generate one based on the story if it's not provided in the propmt must not be above 2 genres",
       ),
     description: z
       .string()
