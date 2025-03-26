@@ -11,7 +11,7 @@ type Props = {
 const aboutData = [
   {
     title: "Personalized Tales",
-    text: "Imagine stories made just for you! Tell Tales Genie a little bit about what you like, and it will weave amazing adventures that feel like they came straight from your dreams. It's like having a story that knows you!",
+    text: "Imagine stories made just for you! Tell TaleGenie a little bit about what you like, and it will weave amazing adventures that feel like they came straight from your dreams. It's like having a story that knows you!",
     alt: "image of a person holding a large book with hearts around",
     src: "/images/about-personalized-tales.svg",
   },
@@ -59,10 +59,10 @@ const AboutCard = ({
       className={`flex flex-col ${!isEven ? "md:flex-row-reverse" : "md:flex-row"} items-center gap-10`}
     >
       <div className="grid h-fit gap-5">
-        <h3 className="text-primary font-cherry text-2xl font-bold">{title}</h3>
-        <p className="text-secondary md:w-[90%]">{text}</p>
+        <h3 className="text-primary font-cherry text-xl xs:text-2xl font-bold">{title}</h3>
+        <p className="text-secondary xs:text-base text-xs lg:w-[90%]">{text}</p>
       </div>
-      <Img alt={alt} src={src} className="h-full w-full md:min-h-[500px]" />
+      <Img alt={alt} src={src} className="h-full w-fit md:w-full md:max-h-[500px]" />
     </div>
   );
 };

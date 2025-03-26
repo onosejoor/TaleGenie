@@ -8,13 +8,13 @@ export default function StoriesHeader() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const queryParam = searchParams.get("query");
+  const queryParam = searchParams.get("keyword");
 
   const [searchQuery, setSearchQuery] = useState(queryParam ?? "");
 
   function clearSearchQuery() {
     const urlQuery = new URLSearchParams(searchParams.toString());
-    urlQuery.delete("query");
+    urlQuery.delete("keyword");
     router.replace(`/stories?${urlQuery}`);
     setSearchQuery("");
     return;
@@ -29,8 +29,8 @@ export default function StoriesHeader() {
     return;
   }
   return (
-    <header className="relative flex h-fit flex-col gap-10 bg-[url(/images/stories-header.png)] bg-cover bg-no-repeat px-20 py-10 md:h-[600px]">
-      <div className="flex flex-col justify-center gap-5 text-center pt-10">
+    <header className="relative flex h-fit flex-col gap-10 bg-[url(/images/stories-header.png)] bg-cover bg-no-repeat px-10 py-10 md:h-[600px] md:px-20">
+      <div className="flex flex-col justify-center gap-5 pt-10 text-center">
         <h1 className="xs:text-4xl font-cherry mx-auto w-full text-center text-3xl font-bold text-white md:w-[80%] md:text-6xl/[1.2]">
           Search for a new Imagination Now!
         </h1>
@@ -42,7 +42,7 @@ export default function StoriesHeader() {
 
       <form
         onSubmit={handleSubmit}
-        className="mx-auto my-5 flex w-fit *:transition-all flex-col items-center gap-7"
+        className="mx-auto my-5 flex w-fit flex-col items-center gap-7"
       >
         <div className="has-focus:ring-accent-blue relative flex items-center gap-3 rounded-xl border-2 border-transparent bg-white px-5 py-3 transition-all has-focus:ring-4">
           <SearchIcon />
@@ -50,12 +50,12 @@ export default function StoriesHeader() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="border-none outline-0 placeholder:text-base transition-all md:focus:w-[500px] md:w-[450px]"
+            className="border-none outline-0 dark:placeholder:text-accent-blue dark:text-dark-gray placeholder:text-base md:w-[450px] md:focus:w-[500px]"
             placeholder="Search For A Story"
           />
           {searchQuery && (
             <CancelIcon
-              className="fill-red-500 absolute right-5"
+              className="absolute right-5 fill-red-500"
               onClick={clearSearchQuery}
               cursor={"pointer"}
             />

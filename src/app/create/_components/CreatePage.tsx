@@ -1,26 +1,39 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
-import { readStreamableValue } from "ai/rsc";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { experimental_useObject as useObject } from "@ai-sdk/react";
+import TextArea from "rc-textarea";
 
-import { generateStory } from "@/app/_lib/generateStory";
 import Img from "@/components/Img";
-import { ArrowDownIcon, CollapseIcon, SendIcon } from "@/components/Icons";
-
-import GeneratedContent from "./GeneratedContent";
+import {
+  ArrowDownIcon,
+  CollapseIcon,
+  SendIcon,
+  StopIcon,
+} from "@/components/Icons";
 import { calculateReadingTime } from "@/app/_lib/utils";
+import { storySchema } from "@/app/api/create/schema";
+import dynamic from "next/dynamic";
+
+const GeneratedContent = dynamic(() => import("./GeneratedContent"));
 
 type Props = {
-  content: string;
+  story: string;
   episodes: number;
   title: string;
   genres: string[];
   readingTime: string;
+  description: string;
+  imgPrompt: string;
 };
 
 export default function StreamingStory() {
-  const [data, setData] = useState<Props | null>();
+  const { object, submit, isLoading, stop } = useObject({
+    api: "/api/create",
+    schema: storySchema,
+  });
 
+  const [data, setData] = useState<Props | null>();
   const [dropdown, setDropdown] = useState(false);
   const [collapseInput, setCollapseInput] = useState(false);
 
@@ -29,7 +42,19 @@ export default function StreamingStory() {
     genre: "",
   });
 
-  const genres = ["Auto", "Comedy", "Horror", "Sci Fi", "Love"];
+  useEffect(() => {
+    if (object) {
+      const readingTime = calculateReadingTime(object.story || "");
+      setData({
+        ...object,
+        readingTime,
+      } as Props);
+    }
+  }, [object]);
+
+  const genres = ["Comedy", "Documentary", "Horror", "Sci Fi", "Real Life"];
+
+  const isDisabled = isLoading || !formData.prompt.trim();
 
   const handleDropDownAndSelect = (genre: string) => {
     setFormData((prev) => {
@@ -41,7 +66,10 @@ export default function StreamingStory() {
     setDropdown(false);
   };
 
-  const handleInputCollapse = () => setCollapseInput(!collapseInput);
+  const handleInputCollapse = () => {
+    setCollapseInput(!collapseInput);
+    setDropdown(false);
+  };
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setFormData((prev) => {
@@ -52,38 +80,27 @@ export default function StreamingStory() {
     });
   };
 
-  const handleGenerateStoryStream = async (e: FormEvent) => {
+  const handleGenerateStoryStream = (e: FormEvent) => {
     e.preventDefault();
+    setData(null);
 
-    const { object } = await generateStory(formData);
-    for await (const partialObject of readStreamableValue(object)) {
-      if (partialObject) {
-        const readingTime = calculateReadingTime(partialObject?.content || "");
-        setData({ ...partialObject, readingTime: readingTime });
-      }
-    }
+    submit(formData);
   };
 
   const { genre, prompt } = formData;
 
   return (
     <>
-      {!data?.content ? (
-        <NoData />
+      {!data?.story ? (
+        <NoData isLoading={isLoading} />
       ) : (
-        <GeneratedContent
-          content={data?.content}
-          episodes={data.episodes}
-          title={data.title}
-          genres={data.genres}
-          readingTime={data.readingTime}
-        />
+        <GeneratedContent {...data} />
       )}
 
       <div className={`sticky bottom-5 z-1 mt-auto w-full`}>
         <form
           onSubmit={handleGenerateStoryStream}
-          className={`shadow-story-card border-accent-blue relative mx-auto flex w-full flex-col items-start gap-10 rounded-[10px] border-2 bg-white p-5 px-5 sm:px-10 md:w-fit md:flex-row`}
+          className={`shadow-story-card border-accent-blue relative mx-auto flex w-full flex-col items-start gap-10 rounded-[10px] border-2 bg-white p-5 px-5 backdrop-blur-lg sm:px-10 md:w-fit md:flex-row dark:bg-black/60`}
         >
           <button
             type="button"
@@ -96,53 +113,72 @@ export default function StreamingStory() {
 
           {/* Genre dropdown menu */}
           {!collapseInput && (
-            <div className="relative flex h-fit w-fit flex-col gap-5 md:max-w-[220px]">
+            <div role="button" className="relative flex h-fit w-fit flex-col gap-5 md:max-w-[220px]">
               <div
                 onClick={() => setDropdown(!dropdown)}
-                className={`shadow-story-card flex h-[54px] w-full cursor-pointer items-center justify-between gap-5 rounded-md bg-white p-3 lg:gap-10 ${dropdown ? "border-accent-blue" : "border-transparent"} border-2`}
+                className={`shadow-story-card flex h-[54px] w-full cursor-pointer items-center justify-between gap-5 rounded-md bg-white p-3 lg:gap-10 dark:bg-black/60 ${dropdown ? "border-accent-blue" : "border-transparent"} border-2`}
               >
-                <b className="text-accent-blue font-medium whitespace-nowrap capitalize">
+                <b className="text-accent-blue font-medium whitespace-nowrap capitalize dark:text-white/80">
                   {genre ? genre : "Select Genre"}
                 </b>
                 <span className={dropdown ? "rotate-180" : "rotate-0"}>
                   <ArrowDownIcon />
                 </span>
               </div>
-              <div
-                className={`shadow-story-card flex w-full flex-col rounded-md bg-white px-1 py-3 ${
-                  !dropdown && "hidden"
-                } transition`}
-              >
-                {genres.map((genre: string, index: number) => {
-                  return (
-                    <b
-                      onClick={() => handleDropDownAndSelect(genre)}
-                      key={index}
-                      className="text-secondary cursor-pointer rounded-md p-3 font-medium capitalize"
-                    >
-                      {genre}
-                    </b>
-                  );
-                })}
-              </div>
+              {dropdown && (
+                <div
+                  className={` shadow-story-card flex w-full flex-col rounded-md bg-white px-1 py-3 transition dark:bg-black/70`}
+                >
+                  {genres.map((genre: string, index: number) => {
+                    return (
+                      <b
+                        onClick={() => handleDropDownAndSelect(genre)}
+                        key={index}
+                        className="text-secondary cursor-pointer rounded-md p-3 font-medium capitalize dark:text-white"
+                      >
+                        {genre}
+                      </b>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 
           <div className="relative flex w-full items-start gap-5 sm:gap-10">
-            <textarea
-              rows={5}
+            <TextArea
               cols={30}
+              autoSize
               value={prompt}
               onChange={handleChange}
-              className={`border-accent-blue w-full resize-none rounded-[10px] border-1 bg-white px-3 py-2 outline-0 transition-all focus:border-b-4 lg:w-[500px] ${collapseInput ? "h-[50px]" : "h-[140px]"}`}
+              className={`border-accent-blue ${collapseInput ? "!h-[50px]" : ""} dark:border-secondary no-scrollbar max-h-[200px] min-h-[50px] w-full resize-none overflow-y-scroll rounded-[10px] border-1 bg-white px-3 py-2 outline-0 transition-all focus:border-b-4 lg:w-[500px] dark:bg-black/70 dark:text-white dark:placeholder:text-white`}
               placeholder="Enter your Story Description"
-            ></textarea>
-            <button
-              type="submit"
-              className={`shadow-story-card absolute right-0 bottom-5 rounded-full bg-white p-3 sm:!static ${collapseInput ? "static" : "mr-5 sm:!m-0"}`}
-            >
-              <SendIcon />
-            </button>
+            />
+
+            {!isLoading ? (
+              <button
+                disabled={isDisabled}
+                type="submit"
+                className={`shadow-story-card right-0 bottom-5 overflow-hidden rounded-full dark:bg-dark-gray/50 bg-white p-3 active:scale-80 disabled:!cursor-not-allowed`}
+              >
+                <span
+                  data-loading={isLoading}
+                  className="data-[loading=true]:animate-send block"
+                >
+                  <SendIcon />
+                </span>
+              </button>
+            ) : (
+              <div
+                role="button"
+                onClick={stop}
+                title="stop"
+                aria-label="stop genrating story"
+                className={`shadow-story-card right-0 bottom-5 dark:bg-dark-gray animate-spin cursor-pointer overflow-hidden rounded-full border-2 border-white border-t-red-500 bg-white p-2.5 active:scale-80 disabled:!cursor-not-allowed`}
+              >
+                <StopIcon />
+              </div>
+            )}
           </div>
         </form>
       </div>
@@ -150,18 +186,43 @@ export default function StreamingStory() {
   );
 }
 
-const NoData = () => (
-  <div className="mx-auto flex w-fit flex-col items-center gap-5 md:flex-row">
-    <Img
-      src={"/images/empty-state.svg"}
-      alt="Empty state, no story yet"
-      className="h-[400px] w-fit"
-    />
-    <div className="grid h-fit gap-5">
-      <h2 className="text-accent-blue text-3xl font-bold sm:text-5xl">
-        No Generated Story Yet
-      </h2>
-      <p className="text-secondary">Generate a story using the input below</p>
+const NoData = ({ isLoading }: { isLoading: boolean }) =>
+  isLoading ? (
+    <div className="grid gap-7 pb-10">
+      <div className="grid gap-10">
+        <div className="flex items-center gap-5">
+          <p className="bg-light-gray h-5 w-[100px] shrink-0 animate-pulse rounded-full"></p>
+
+          <p className="bg-light-gray h-5 w-[100px] shrink-0 animate-pulse rounded-full"></p>
+        </div>
+        <p className="bg-light-gray h-5 w-full animate-pulse rounded-full sm:max-w-[500px]"></p>
+
+        <p className="bg-light-gray h-5 w-full animate-pulse rounded-full sm:max-w-[500px]"></p>
+      </div>
+
+      <div className="bg-light-gray h-[300px] w-full animate-pulse rounded-[10px] sm:max-w-[500px]"></div>
+      <div className="grid gap-5">
+        {[...Array(7)].map((_, index) => (
+          <div
+            style={{ width: index * 100 }}
+            key={index}
+            className="bg-light-gray h-5 !w-full animate-pulse rounded-full sm:max-w-[500px]"
+          ></div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  ) : (
+    <div className="mx-auto flex w-fit flex-col items-center gap-5 md:flex-row">
+      <Img
+        src={"/images/empty-state.svg"}
+        alt="Empty state, no story yet"
+        className="h-[400px] w-fit"
+      />
+      <div className="grid h-fit gap-5">
+        <h2 className="text-accent-blue text-3xl font-bold sm:text-5xl">
+          No Generated Story Yet
+        </h2>
+        <p className="text-secondary">Generate a story using the input below</p>
+      </div>
+    </div>
+  );

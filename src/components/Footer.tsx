@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Img from "./Img";
-import { LightIcon, MoonIcon, SystemIcon } from "./Icons";
+import ThemeSwitch from "./theme/ThemeSwitch";
 
 const footerLinks = [
   { href: "/stories", text: "Explore Stories" },
@@ -11,7 +11,7 @@ const footerLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-accent-blue/5 mt-10  px-5 sm:px-10 md:px-20">
+    <footer className="bg-accent-blue/5 dark:bg-black/50 talegenie-container mt-10 px-5 sm:px-10 md:px-20">
       <div className="mx-auto grid w-full gap-5 py-4">
         <div className="sm:flex sm:items-center sm:justify-between">
           <Link href="/">
@@ -32,7 +32,7 @@ export default function Footer() {
           </ul>
         </div>
         <hr className="my-6 w-full border-[#dadada] sm:mx-auto lg:my-8" />
-        <div className="flex items-center justify-between">
+        <div className="flex xs:items-center justify-between  xs:flex-row flex-col gap-5">
           <span className="block text-sm text-gray-500 sm:text-center">
             © {new Date().getFullYear()}{" "}
             <Link href="/" className="hover:underline">
@@ -40,11 +40,7 @@ export default function Footer() {
             </Link>
             . All Rights Reserved.
           </span>
-          <div className="border-secondary ml-auto flex w-fit items-center gap-5 rounded-full border p-2">
-            <SystemIcon />
-            <LightIcon />
-            <MoonIcon />
-          </div>
+          <ThemeSwitch />
         </div>
       </div>
     </footer>

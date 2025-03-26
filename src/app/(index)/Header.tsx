@@ -6,11 +6,11 @@ export default function Header() {
   return (
     <header className="grid grid-cols-1 items-center gap-[50px] py-10 px-10 md:grid-cols-2 md:px-20">
       <div className="grid h-fit justify-items-center gap-7 text-center md:justify-items-start md:text-start">
-        <h1 className="font-geist text-secondary xs:text-4xl font-bold md:text-5xl lg:text-6xl/[1.2]">
+        <h1 className="font-geist text-secondary text-2xl xs:text-4xl font-bold md:text-5xl lg:text-6xl/[1.2]">
           <span className="text-primary font-cherry">TaleGenie</span> Where AI
           and Imagination Meet
         </h1>
-        <p className="text-secondary font-geist">
+        <p className="text-secondary xs:text-base text-xs font-geist">
           We make it simple to bring your stories to life, so you can explore
           endless worlds of imagination!
         </p>

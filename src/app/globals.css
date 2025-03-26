@@ -1,5 +1,8 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-geist: var(--font-geist);
@@ -9,10 +12,63 @@
   --color-secondary: #444444;
   --color-accent-blue: #407bff;
   --color-light-gray: #d4d4d4;
+  --color-dark-gray: #6a6a6a;
 
   --breakpoint-xs: 450px;
 
   --shadow-story-card: 0px 0px 20px 5px #00000010;
+  --shadow-settings: 0px 0px 10px 3px #00000010;
+
+  --shadow-story-card-dark: 0px 0px 20px 5px #ffffff09;
+  --shadow-settings-dark: 0px 0px 10px 3px #ffffff09;
+
+  --animate-scale: scale 0.9s ease-in-out infinite;
+  --animate-send: send 0.5s linear infinite;
+  --animate-marquee: loader 1s infinite linear;
+
+  @keyframes scale {
+    0%,
+    40%,
+    100% {
+      transform: scaleY(0.05);
+    }
+
+    20% {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes send {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    50% {
+      transform: translateX(100%);
+    }
+
+    100% {
+      transform: translateX(200%);
+    }
+  }
+
+  @keyframes loader {
+    0% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}
+
+@layer base {
+  .dark {
+    --color-secondary: #cdcdcd;
+  }
 }
 
 button {
@@ -21,4 +77,20 @@ button {
 
 * {
   @apply transition-all;
+}
+
+@utility talegenie-container {
+  @apply mx-auto w-full max-w-[1440px];
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
