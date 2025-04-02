@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
 export async function signOut() {
@@ -8,8 +7,7 @@ export async function signOut() {
     const cookie = await cookies();
 
     cookie.delete("talegenie_session");
-
-    redirect("/signin");
+    return true;
   } catch (error) {
     console.log(error);
   }

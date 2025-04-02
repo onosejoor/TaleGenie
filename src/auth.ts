@@ -18,24 +18,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           if (user) {
             await createSession(user.id, user.username);
-
-            return true;
+            return `/create?username=${user.username}`;
           }
 
-          const { name, email, picture, preferred_username } = profile;
+          const { name, email, picture } = profile;
           const newUser = new User({
             name,
             email,
             avatar: picture,
             password: process.env.GOOGLE_CODE!,
-            username: preferred_username ?? null,
+            username: null,
           });
 
           const savedData = await newUser.save();
-
           await createSession(savedData.id, savedData.username);
 
-          return true;
+          return `/create-username`;
         }
         return false;
       } catch (error) {
@@ -44,19 +42,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return false;
       }
     },
-
     async redirect({ url, baseUrl }) {
-      try {
-        const session = await verifySession();
-        if (!session.username && url.startsWith("/")) {
-          return `${baseUrl}/create-username`;
-        }
-
-        return `${baseUrl}/create`;
-      } catch (error) {
-        console.log(error instanceof Error ? error.message : error);
-        return url;
+      const urlObj = new URL(url, baseUrl);
+      const username = urlObj.searchParams.get("username");
+      if (!username && url.startsWith("/")) {
+        return `${baseUrl}/create-username`;
       }
+      return `${baseUrl}/create`;
     },
   },
 });

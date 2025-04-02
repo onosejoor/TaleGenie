@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import Spinner from "../loaders/Spinner";
 import { isActiveClassName } from "@/app/_lib/utils";
 import { signOut } from "@/lib/actions/signout";
+import { useRouter } from "next/navigation";
 
 type Props = {
   openDropDown: boolean;
@@ -30,11 +31,13 @@ export default function UserNavComp({
     data: response,
     error,
     isLoading,
+    mutate,
   } = useSWR<SWRResponse>("/api/user/me", fetcher, {
     refreshWhenOffline: false,
     revalidateIfStale: false,
   });
 
+  const router = useRouter();
   const path = usePathname();
 
   const authLinks = [
@@ -47,6 +50,8 @@ export default function UserNavComp({
   async function handleSignOut() {
     await signOut();
     handleNavExpansion();
+    await mutate();
+    router.push("/signin");
   }
 
   if (error) {
