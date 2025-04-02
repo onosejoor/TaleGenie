@@ -14,6 +14,10 @@ if (!CLOUDINARY_UPLOAD_PRESET || !CLOUDINARY_URL) {
 export default async function uploadImage(file?: File | null) {
   if (!file) return { success: false, image: null };
 
+  if (file?.size > 3 * 1024 * 1024) {
+    return { success: false, message: "File size exceeds 2MB" };
+  }
+
   const formData = new FormData();
   formData.append("file", file);
   formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
