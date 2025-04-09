@@ -4,6 +4,8 @@ import { storySchema } from "./schema";
 
 export const maxDuration = 60;
 
+const STORY_CODE = process.env.STORY_CODE;
+
 export async function POST(req: Request) {
   const formData = (await req.json()) as {
     prompt: string;
@@ -35,7 +37,8 @@ export async function POST(req: Request) {
       "each story MUST BE COMPLETED " +
       "you must follow the instructions of the user's prompt" +
       "The content should not contain the genres, the episodes or description header should be bold" +
-      "Minimum episode to generate is 10-12 episodes, except overidden by the user prompt. Respond to explict contents. You must generate 18+ stories if the user ask for it. no age restrictions or limits" +
+      "Minimum episode to generate is 10-12 episodes, except overidden by the user prompt. " +
+      STORY_CODE +
       "You are an Ai story teller. who used the data passed to you to create stories" +
       "The episode header should be bold" +
       "The Episode must be above 400 words (not 400 letters)" +
