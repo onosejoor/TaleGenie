@@ -22,8 +22,8 @@ export async function GET(req: NextRequest) {
         .skip((nextPage - 1) * documentLimit)
         .sort({ createdAt: -1 })
         .limit(documentLimit)
-        .populate<{ author: IUser }>("author")
-        .select(["-email", "-password"])
+        .populate<{ author: IUser }>("author", ["-email", "-password"])
+
         .lean();
 
       if (!findStoryByQuery) {
@@ -42,8 +42,8 @@ export async function GET(req: NextRequest) {
       .skip((nextPage - 1) * documentLimit)
       .sort({ createdAt: -1 })
       .limit(documentLimit)
-      .populate<{ author: IUser }>("author")
-      .select(["-email", "-password"])
+      .populate<{ author: IUser }>("author", ["-email", "-password"])
+
       .lean();
 
     return NextResponse.json({ success: true, stories: getStories });

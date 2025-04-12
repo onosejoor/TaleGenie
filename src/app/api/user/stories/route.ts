@@ -42,8 +42,6 @@ export async function GET(req: NextRequest) {
         .skip((nextPage - 1) * documentLimit)
         .sort({ createdAt: -1 })
         .limit(documentLimit)
-        .populate("author")
-        .select(["-email", "-password"])
         .exec();
 
       return NextResponse.json({ success: true, stories: getStories });
@@ -53,8 +51,6 @@ export async function GET(req: NextRequest) {
       .skip((nextPage - 1) * documentLimit)
       .sort({ createdAt: -1 })
       .limit(documentLimit)
-      .populate("author")
-
       .exec();
 
     return NextResponse.json({ success: true, stories: getStories });
