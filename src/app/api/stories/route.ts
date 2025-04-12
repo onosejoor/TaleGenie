@@ -23,6 +23,7 @@ export async function GET(req: NextRequest) {
         .sort({ createdAt: -1 })
         .limit(documentLimit)
         .populate<{ author: IUser }>("author")
+        .select(["-email", "-password"])
         .lean();
 
       if (!findStoryByQuery) {
@@ -42,6 +43,7 @@ export async function GET(req: NextRequest) {
       .sort({ createdAt: -1 })
       .limit(documentLimit)
       .populate<{ author: IUser }>("author")
+      .select(["-email", "-password"])
       .lean();
 
     return NextResponse.json({ success: true, stories: getStories });

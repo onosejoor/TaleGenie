@@ -47,18 +47,13 @@ export default function SignInForm() {
     e.preventDefault();
     setLoading(true);
 
-    let isEmptyFields = false;
-
     const inputKeys = Object.keys(formData);
 
-    inputKeys.forEach((key) => {
-      if (!formData[key as keyof IFormData].trim()) {
-        isEmptyFields = true;
-        return;
-      }
-    });
+    const isEmpty = inputKeys.some(
+      (key) => !formData[key as keyof IFormData].trim(),
+    );
 
-    if (isEmptyFields) {
+    if (isEmpty) {
       showToast({
         variants: "error",
         message: "All inputs must be filled",
@@ -91,7 +86,7 @@ export default function SignInForm() {
   };
 
   return (
-    <div className="border-light-gray dark:bg-black/70 dark:border-transparent dark:shadow-story-card-dark grid h-fit w-full grid-cols-1 gap-5 overflow-hidden rounded-[10px] border-2 bg-white md:grid-cols-[1.5fr_2fr]">
+    <div className="border-light-gray dark:shadow-story-card-dark grid h-fit w-full grid-cols-1 gap-5 overflow-hidden rounded-[10px] border-2 bg-white md:grid-cols-[1.5fr_2fr] dark:border-transparent dark:bg-black/70">
       <form
         className="mx-auto grid h-fit w-full shrink-0 gap-10 px-5 py-10 sm:mx-0 sm:w-md sm:p-10 lg:w-full"
         onSubmit={handleSubmit}
