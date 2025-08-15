@@ -24,7 +24,7 @@ export async function POST(req: Request) {
   };
 
   const result = streamObject({
-    model: google("gemini-2.0-flash"),
+    model: google("gemini-2.5-flash"),
     output: "object",
     schema: storySchema,
     prompt: `generate a story based on ${JSON.stringify(formData)} with the following data: ${JSON.stringify(body)}. the data provide in ${JSON.stringify(formData)} should override the ones in ${JSON.stringify(body)}`,
