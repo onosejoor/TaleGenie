@@ -148,7 +148,7 @@ export default function GeneratedContent({
             data-loading={loading}
             onClick={handlePublishStory}
             disabled={loading !== false}
-            className="group text-secondary data-[loading=publish]:!bg-accent-blue dark:bg-accent-blue hover:bg-accent-blue border-accent-blue flex w-fit items-center gap-3 overflow-hidden rounded-[10px] border-2 bg-transparent p-3 px-5 font-medium dark:text-white"
+            className="group text-secondary data-[loading=published]:!bg-accent-blue dark:bg-accent-blue hover:bg-accent-blue border-accent-blue flex w-fit items-center gap-3 overflow-hidden rounded-[10px] border-2 bg-transparent p-3 px-5 font-medium dark:text-white"
           >
             {loading === "published" ? (
               <Spinner color="white" />

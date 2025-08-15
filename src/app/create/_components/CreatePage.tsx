@@ -85,6 +85,10 @@ export default function StreamingStory() {
     setData(null);
 
     submit(formData);
+    setFormData({
+      prompt: "",
+      genre: "",
+    });
   };
 
   const { genre, prompt } = formData;
@@ -113,7 +117,10 @@ export default function StreamingStory() {
 
           {/* Genre dropdown menu */}
           {!collapseInput && (
-            <div role="button" className="relative flex h-fit w-fit flex-col gap-5 md:max-w-[220px]">
+            <div
+              role="button"
+              className="relative flex h-fit w-fit flex-col gap-5 md:max-w-[220px]"
+            >
               <div
                 onClick={() => setDropdown(!dropdown)}
                 className={`shadow-story-card flex h-[54px] w-full cursor-pointer items-center justify-between gap-5 rounded-md bg-white p-3 lg:gap-10 dark:bg-black/60 ${dropdown ? "border-accent-blue" : "border-transparent"} border-2`}
@@ -127,7 +134,7 @@ export default function StreamingStory() {
               </div>
               {dropdown && (
                 <div
-                  className={` shadow-story-card flex w-full flex-col rounded-md bg-white px-1 py-3 transition dark:bg-black/70`}
+                  className={`shadow-story-card flex w-full flex-col rounded-md bg-white px-1 py-3 transition dark:bg-black/70`}
                 >
                   {genres.map((genre: string, index: number) => {
                     return (
@@ -159,7 +166,7 @@ export default function StreamingStory() {
               <button
                 disabled={isDisabled}
                 type="submit"
-                className={`shadow-story-card right-0 bottom-5 overflow-hidden rounded-full dark:bg-dark-gray/50 bg-white p-3 active:scale-80 disabled:!cursor-not-allowed`}
+                className={`shadow-story-card dark:bg-dark-gray/50 right-0 bottom-5 overflow-hidden rounded-full bg-white p-3 active:scale-80 disabled:!cursor-not-allowed`}
               >
                 <span
                   data-loading={isLoading}
@@ -174,7 +181,7 @@ export default function StreamingStory() {
                 onClick={stop}
                 title="stop"
                 aria-label="stop genrating story"
-                className={`shadow-story-card right-0 bottom-5 dark:bg-dark-gray animate-spin cursor-pointer overflow-hidden rounded-full border-2 border-white border-t-red-500 bg-white p-2.5 active:scale-80 disabled:!cursor-not-allowed`}
+                className={`shadow-story-card dark:bg-dark-gray right-0 bottom-5 animate-spin cursor-pointer overflow-hidden rounded-full border-2 border-white border-t-red-500 bg-white p-2.5 active:scale-80 disabled:!cursor-not-allowed`}
               >
                 <StopIcon />
               </div>
