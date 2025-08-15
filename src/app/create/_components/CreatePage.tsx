@@ -89,6 +89,7 @@ export default function StreamingStory() {
       prompt: "",
       genre: "",
     });
+    setCollapseInput(false);
   };
 
   const { genre, prompt } = formData;
